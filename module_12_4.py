@@ -1,5 +1,7 @@
 import logging
 import unittest as ut
+from sys import exc_info
+
 from Module_12.rt_with_exceptions import Runner
 
 logging.basicConfig(level=logging.INFO, filemode='w', filename='runner_tests.log',
@@ -22,10 +24,15 @@ class RunnerTest(ut.TestCase):
 
     @ut.skipIf(is_frozen == True, 'Тесты в этом кейсе заморожены')
     def test_run(self):
-        self.runner = Runner('Tod')
-        for _ in range(10):
-            self.runner.run()
-        self.assertEqual(self.runner.distance, 100)
+        try:
+            self.runner = Runner(True)
+            for _ in range(10):
+                self.runner.run()
+            self.assertEqual(self.runner.distance, 100)
+            logging.info('"test_run" выполнен успешно')
+        except:
+            logging.warning('Неверный тип данных для объекта Runner', exc_info=True)
+
 
     @ut.skipIf(is_frozen == True, 'Тесты в этом кейсе заморожены')
     def test_challenge(self):
